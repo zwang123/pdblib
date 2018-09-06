@@ -9,23 +9,23 @@ def parse_pdb_line(l):
     return OrderedDict(
         [
             # TODO support more than 100000 atoms
-            ("Record"    ,       l[ 0: 6] ),
-            ("serial"    ,   int(l[ 6:11])),
-            ("name"      ,       l[12:16] ),
-            ("altLoc"    ,       l[16:17] ),
-            ("resName"   ,       l[17:21] ),
-            ("chainID"   ,       l[21:22] ),
+            ("Record"    ,       l[ 0: 6].strip()),
+            ("serial"    ,   int(l[ 6:11])       ),
+            ("name"      ,       l[12:16].strip()),
+            ("altLoc"    ,       l[16:17].strip()),
+            ("resName"   ,       l[17:21].strip()),
+            ("chainID"   ,       l[21:22].strip()),
             # TODO support more than 10000 residues
-            ("resSeq"    ,   int(l[22:26])),
-            ("iCode"     ,       l[26:27] ),
-            ("x"         , float(l[30:38])),
-            ("y"         , float(l[38:46])),
-            ("z"         , float(l[46:54])),
-            ("occupancy" , float(l[54:60])),
-            ("tempFactor", float(l[60:66])),
-            ("segment"   ,       l[72:76] ),
-            ("element"   ,       l[76:78] ),
-            ("charge"    ,       l[78:80] ),
+            ("resSeq"    ,   int(l[22:26])       ),
+            ("iCode"     ,       l[26:27].strip()),
+            ("x"         , float(l[30:38])       ),
+            ("y"         , float(l[38:46])       ),
+            ("z"         , float(l[46:54])       ),
+            ("occupancy" , float(l[54:60])       ),
+            ("tempFactor", float(l[60:66])       ),
+            ("segment"   ,       l[72:76].strip()),
+            ("element"   ,       l[76:78].strip()),
+            ("charge"    ,       l[78:80].strip()),
         ]
     )
 
