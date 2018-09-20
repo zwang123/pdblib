@@ -1,4 +1,7 @@
 class PDBList(list):
+    """
+    store as list of dict, but can function as a dict of list
+    """
     def __getitem__(self, key):
         #if type(key) is int:
         try:

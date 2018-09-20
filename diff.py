@@ -1,12 +1,13 @@
 from pdblib import parse_pdb_file, parse_pdb_line
 from .pdblist import PDBList
+from math import isclose
 
-def equal(lhs, rhs, tol=1e-6):
+def equal(lhs, rhs):
     """
     An equal function considering floating points
     """
     try:
-        return abs(lhs - rhs) < tol
+        return isclose(lhs, rhs)
     except:
         return lhs == rhs
 
@@ -20,7 +21,7 @@ def entry_match(lhs, rhs, matching_keys =
             return False
     return True
 
-def entry_compare(lhs, rhs, cmp_keys = ["x", "y", "z"]):
+def entry_compare(lhs, rhs, cmp_keys = ["x", "y", "z", "element"]):
     """
     Return True if lhs and rhs mismatch for any key in cmp_keys
     """

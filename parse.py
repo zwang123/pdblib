@@ -51,11 +51,18 @@ def write_pdb_line(entry):
     mod_entry["name"] = name
     return '{: <6s}{: >5d} {: <4s}{:1s}{: <4s}{:1s}{: >4d}{:1s}   {: >8.3f}{: >8.3f}{: >8.3f}{: >6.2f}{: >6.2f}      {: <4s}{: >2s}{: >2s}'.format(*mod_entry.values()).rstrip() + '\n'
 
-def write_pdb_file(pdbdata):
+def write_pdb_lines(pdbdata):
     """
     Convert a list of OrderedDict to a pdb file string
     """
     return ''.join([write_pdb_line(entry) for entry in pdbdata])
+
+def write_pdb_file(pdbdata, filename):
+    """
+    Convert a list of OrderedDict to a pdb file
+    """
+    with open(filename, "w") as f:
+        f.write(write_pdb_lines(pdbdata))
 
 if __name__ == "__main__":
     #parse_pdb_line("ATOM   1914  SOD SOD S1127       0.016  -3.389  -0.040  1.00 58.57      S   NA")
