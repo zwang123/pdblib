@@ -1,3 +1,5 @@
+from numpy import array
+
 class PDBList(list):
     """
     store as list of dict, but can function as a dict of list
@@ -22,3 +24,12 @@ class PDBList(list):
         for i, x in enumerate(self):
             if x["serial"] == serial:
                 return i
+
+    def getposition(self, index):
+        entry = self[index]
+        return array((entry["x"], entry["y"], entry["z"]))
+
+    def setposition(self, index, value):
+        self[index]["x"] = value[0]
+        self[index]["y"] = value[1]
+        self[index]["z"] = value[2]

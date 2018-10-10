@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from .pdblist import PDBList
+import textwrap
 
 def parse_pdb_line(l):
     """
@@ -63,6 +64,47 @@ def write_pdb_file(pdbdata, filename):
     """
     with open(filename, "w") as f:
         f.write(write_pdb_lines(pdbdata))
+
+def pdb2fasta(pdbdata, pdbname='', linewidth=80, resmap={}):
+    """ convert parsed pdb data to fasta sequence """
+
+    # TODO python 3.5
+    resmap = {'ALA':'A','ARG':'R','ASN':'N',
+              'ASP':'D','CYS':'C','GLU':'E',
+              'GLN':'Q','GLY':'G','HIS':'H',
+              'HSD':'H','HSE':'H','HSP':'H',
+              'ILE':'I','LEU':'L','LYS':'K',
+              'MET':'M','PHE':'F','PRO':'P',
+              'SER':'S','THR':'T','TRP':'W',
+              'TYR':'Y','VAL':'V', **resmap}
+
+    delim = '\n'
+    for entry in pdbdata:
+        if delim in entry['chainID'] + entry['segment']:
+            raise ValueError(r"chainID or segment contain \n")
+
+    fasta = OrderedDict()
+    for entry in pdbdata:
+        symbol = resmap.get(entry['resName'], '-')
+        key = entry['chainID']+delim+entry['segment']
+        res = entry['resSeq']
+        if key in fasta:
+            if res in fasta[key]:
+                if fasta[key][res] != symbol:
+                    raise ValueError("Multiple resName in the same residue")
+            else:
+                fasta[key][res] = symbol
+        else:
+            fasta[key] = {res: symbol}
+
+    fasta_str = ''
+    for key, item in fasta.items():
+        chain, segment = key.split(delim)
+        fasta_str += '>{}:{}|{}\n'.format(pdbname, chain, segment)
+        seq = ''.join(item[k] for k in sorted(item))
+        fasta_str += textwrap.fill(seq, width=linewidth) + '\n'
+
+    return fasta_str
 
 if __name__ == "__main__":
     #parse_pdb_line("ATOM   1914  SOD SOD S1127       0.016  -3.389  -0.040  1.00 58.57      S   NA")
